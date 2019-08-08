@@ -2,12 +2,13 @@
 
 Repositório de aplicações em Python para testes diversos que sirvam tanto para a prática da programação quanto desenvolvimento de soluções reais. 
 
-# Install
+# Instalar
 
 pip install google
 
 pip install beautifulsoup4
 
+# Observações
 
 **search(query, tld='com', lang='en', num=10, start=0, stop=None, pause=2.0)**
 
