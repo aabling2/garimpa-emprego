@@ -1,6 +1,6 @@
-# Python projects
+# Garimpa Emprego
 
-Repositório de aplicações em Python para testes diversos que sirvam tanto para a prática da programação quanto desenvolvimento de soluções reais. 
+Script de busca aprofundada de empregos em sites que não surgem como primeiras opções nas buscas do google. Utilizando web scraping das páginas recolhidas com uso de palavras-chave de ligação com o currículo, habilidades e preferências do indivíduo para definir as prioridades de busca.
 
 # Instalar
 
