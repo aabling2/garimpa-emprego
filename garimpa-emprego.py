@@ -64,20 +64,21 @@ def Load_bag_results():
 
 # Function to request content of the url
 def Request_content(url):
+    soup_url = {}
     try:
         request = requests.get(url, allow_redirects=True, auth=('user', 'pass'), timeout=10)            
         if request.status_code == 200:
             print('A página é válida')
-            soup = BeautifulSoup(request.content, 'lxml')
-            r_bool = True
+            soup_url = BeautifulSoup(request.content, 'lxml')
+            r_bool_url = True
         else:
             print('A página NÃO é válida')
-            r_bool = False
+            r_bool_url = False
     except:
         print('A página NÃO é válida')
-        r_bool = False
+        r_bool_url = False
         
-    return soup, r_bool
+    return soup_url, r_bool_url
 
 print('Funções OK')
 
@@ -97,10 +98,10 @@ lv3 = 2.5
 lv4 = 2.0
 
 # Dictionary of keywords / use uppercase at first character / maximum 2 words
-keys_lv1 = {}.fromkeys(['Visao Computacional'],lv1)
-keys_lv2 = {}.fromkeys(['Inteligencia Artificial', 'GPU', 'CUDA', 'Qt Creator', 'OpenCV', 'Unreal Engine', 'Unity', 'Projetos', 
+keys_lv1 = {}.fromkeys(['Visao Computacional', 'Computer Vision'],lv1)
+keys_lv2 = {}.fromkeys(['Inteligencia Artificial', 'GPU', 'CUDA', 'OpenCV','Projetos', 
                         'C++', 'Python', 'Programador', 'Engenharia Eletrica', 'Mecatronica', 'Automação', 'Robotica'],lv2)
-keys_lv3 = {}.fromkeys(['Projetista', 'Desenvolvedor', 'Desenhista', 'Cadista', 'Cad', 'Autocad'],lv3)
+keys_lv3 = {}.fromkeys(['Projetista', 'Desenvolvedor'],lv3)
 
 # Dictionary of auxiliary keywords to find jobs / join the main key
 keys_init = {}.fromkeys(['Vaga', 'Emprego', 'Oportunidade', 'Startup', 'Junior', 'Pleno', 'Auxiliar', 'Tecnico', 'Assistente', 'Analista', 'Trainee', 'Engenheiro'],lv4)
@@ -115,8 +116,12 @@ print(keys_init)
 #---------------------------------------
 
 # Code to research and save links
+
 # Number of searches for each subject
 num_search = 100
+
+# Delay for requests pause
+time_delay = len(keys_lv)+len(keys_init)
 
 Create_folder('Links')
 
@@ -125,7 +130,7 @@ for keys in keys_lv1:
     try:
         bag_links = {}
         file_exist = False
-        time_delay = len(keys_lv)+len(keys_init)
+        
         file_name = 'Links/' + keys + '.txt'
 
         if os.path.isfile(file_name) == True:
@@ -144,24 +149,24 @@ for keys in keys_lv1:
             query = init + ' ' + keys
             
             # Pause with long time delay will mantain the connection and not block when have lot of queries 
-            for link_finded in search(query, tld="co.in", lang='pt', num=num_search, stop=num_search, pause=time_delay*1.5):    
+            for link_finded in search(query, tld="com", lang='pt', num=num_search, stop=num_search, pause=time_delay*3):    
                 bag_links[link_finded] = 0
-
+                
         if file_exist == False:
             txt_data = str(bag_links)
             register_links.write(txt_data)
             register_links.close()
             print("Arquivo salvo: ", file_name)
             
-    except:
+    except Exception as e:
         if file_exist == False:
             register_links.close()
             os.remove(file_name)
-            print("Erro na requisição de páginas")
+            print(e)
             print("Arquivo removido: ", file_name)
             break
         
-print("Pesquisa finalizada!")
+print("Pesquisa finalizada!") 
 
 #---------------------------------------
 
@@ -176,6 +181,12 @@ progress = 0
 # Special condition when search double '+' 
 if 'C++' in keys_lv_init:
     keys_lv_init['C+'] = keys_lv_init.pop('C++')
+    
+# Include lower case keys
+lower_keys_lv_init = {}
+for k, v in keys_lv_init.items():
+    lower_keys_lv_init[k.lower()] = v
+keys_lv_init.update(lower_keys_lv_init)
     
 Create_folder('Backups')
     
@@ -208,6 +219,7 @@ for keys in keys_lv1:
         print('--> %.2f'%progress, '%')
         print('\n\033[1m'+url+'\033[0;0m')
 
+        # Request pages and get the soup of it
         soup, r_bool = Request_content(url)
         
         for searched_word in keys_lv_init:
@@ -215,10 +227,8 @@ for keys in keys_lv1:
             if r_bool is False:
                 break
 
-            keys_lv_init[searched_word.lower()] = keys_lv_init.value()            
-
             results = soup.find_all(string=re.compile(searched_word))
-
+            
             words = None
             searched_word_split = None
             searched_word_split = searched_word.split()
@@ -237,7 +247,7 @@ for keys in keys_lv1:
                         word_double = words[index-1]+' '+word
 
                     if word==searched_word or word_double==searched_word:         
-                        bag_links[url] += keys_lv_init[searched_word_original]
+                        bag_links[url] += keys_lv_init[searched_word]
                         print('Palavra encontrada: ', searched_word)
 
                         break
@@ -260,6 +270,7 @@ for keys in keys_lv1:
         register_links_result.close()
         print("Backup salvo!")
 
+    clear_output(wait=True)
     print('\nVarredura completa para: ', keys)
 
 print('\nVarredura de páginas completa!')
@@ -277,7 +288,7 @@ print('\033[1mTotal de links: ', len(bag_links_rank), '\033[0;0m')
 #---------------------------------------
 
 # Code to limit rank and create a HTML archive with the results
-limit_rank = 1000
+limit_rank = 200
 html_links = ""
 html_keys1 = ""
 html_keys2 = ""
