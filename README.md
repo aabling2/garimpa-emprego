@@ -34,18 +34,18 @@ Script de busca aprofundada de empregos em sites que não surgem como primeiras 
 Seguem abaixo os requisitos para rodar a aplicação e junto os comandos sugeridos para instalação, caso esteja usando Ubuntu.
 
 * Python 3: 		sudo apt-get install python3
-* Pip3:				sudo apt-get install python3-pip 
-* Flask:			pip3 install Flask
-* Numpy:			pip3 install numpy
+* Pip3:			sudo apt-get install python3-pip 
+* Flask:		pip3 install Flask
+* Numpy:		pip3 install numpy
 * Google-search:	pip install google-search
 * Beautifulsoup4: 	pip install beautifulsoup4
-* Requests:			pip install requests
-* PDFMiner:			pip install pdfminer
-* Werkzeug:			pip install Werkzeug
+* Requests:		pip install requests
+* PDFMiner:		pip install pdfminer
+* Werkzeug:		pip install Werkzeug
 
 ## Argumentos de entrada
 
-*-h					--Ajuda
+*-h				--Ajuda
 *-p 5000			--Porta do servidor local
 
 ## Instruções de uso
