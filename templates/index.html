@@ -175,13 +175,13 @@
                         else if (document.getElementById("radio4").checked)
                           var space = "word_space4";
                         else if (document.getElementById("radio5").checked)
-                          var space = "";
+                          var space = "word_space0";
 
-                        if (space != ""){
+                        if (space != "word_space0"){
                           button.appendChild(txt);
                           button.onclick = function() {this.parentNode.removeChild(this)};
                           document.getElementById(space).appendChild(button);
-                          document.getElementById(idinput).value = null
+                          document.getElementById(idinput).value = null;
                         }
                         else{
                           keys_off = input_txt;

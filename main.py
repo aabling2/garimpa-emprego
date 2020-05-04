@@ -226,9 +226,8 @@ def update1():
         if del_word:
             if del_word.lower() not in dict_words:
                 dict_words.append(del_word.lower())
-                print(del_word)
                 scan_words.remove(del_word)
-                print("Item incluido na exclusão:", del_word.lower())
+                print("Item excluído:", del_word.lower())
 
         # Save changes to dictionary of bad words and set parameters
         OT.Save_data(dict_words, 'dict')
