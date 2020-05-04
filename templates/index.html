@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="pt-br">
+  </head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='styles.css') }}" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <table>
+        <form action="{{ url_for('main') }}" method="POST" enctype="multipart/form-data">
+
+          <div id="header">
+            <h2>GARIMPA EMPREGO
+            <input style="float: right;" class="myButton" type="submit" name="manage" value="Gerenciar links"><br></br>
+          </div>
+
+            <td style="width: 50%; height: auto;">
+
+              <div class="field" style="height: 856px;">
+                <h3 id="idpdf"></h3>
+                  <script> document.getElementById("idpdf").innerHTML = "{{filename}}"; </script>
+                  <input id='filepdf' type="file" name="file" value="{{filename}}" accept=".pdf">
+                  <input style="float: right;" class="myButton" type="submit" name="open" value="Carregar"><br></br>
+                  <iframe id="iframepdf" src="{{ url_for('static', filename=filename) }}" width="100%" height="750px" frameborder="0"></iframe>
+                  
+              </div>
+            
+            </td><td style="width: 50%; height: auto;">
+                  
+                  <div>
+                  <h3 id="titles" >Web Scrapping</h3>
+                  <input class="myButton" type="submit" name="scan" value="*Scan CV">
+                  <input class="myButton" type="submit" name="search" value="*Pesquisar" onclick="updateWords()">
+                  <input class="myButton" type="submit" name="scrap" value="*Scrapping" onclick="updateWords()">
+                  <input class="myButton" type="submit" name="list_results" value="*Listar resultados" onclick="updateWords()">
+                  <input class="myButton" type="submit" name="stop" value="&#9632">
+                  </div>
+
+                  <div> 
+                    <h3 id="titles">Configurações</h3>
+                    <table style="width: auto;">
+                      <tr><td>
+                        <label>Número de buscas</label></td><td>
+                        <input style="width: 50px;" name="number_search" type="text" value="{{num_search}}"></td>
+                      </tr><tr><td>
+                        <label>Peso Entrada</label></td><td>
+                        <input style="width: 50px;" name="weight4" type="text" value="{{lv4}}"></td><td>
+                        <label>Peso Busca</label></td><td>
+                        <input style="width: 50px;" name="weight1" type="text" value="{{lv1}}"></td>
+                      </tr><tr><td>
+                        <label>Peso Complemento 1</label></td><td>
+                        <input style="width: 50px;" name="weight2" type="text" value="{{lv2}}"></td><td>
+                        <label>Peso Complemento 2</label></td><td>
+                        <input style="width: 50px;" name="weight3" type="text" value="{{lv3}}"></td>
+                      </tr>
+                    </table><br>
+                    <input class="myButton" type="submit" name="update_files" value="Copiar e Atualizar" onclick="updateWords()">
+                    <input class="myButton" type="submit" name="clear_files" value="Excluir Arquivos" onclick="updateWords()">
+                    <select id="list_files" onchange="updateWords()">
+                      {% for file in date_files[::-1] %}
+                        <option value={{file}}>{{file}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="field" style="height: 369px;"> 
+                    <h3 id="titless">Palavras-chave</h3>
+                    <input class="myButton" type="submit" name="set_params" value="Salvar parâmetros" onclick="updateWords()">
+                    <input id="radio1" type="radio" checked="checked" name="color_sel">
+                    <canvas id="myCanvas1" width="12" height="12" style="border:1px solid #d3d3d3;"> Your browser does not support the HTML5 canvas tag.</canvas>
+                    <input id="radio2" type="radio" name="color_sel"> 
+                    <canvas id="myCanvas2" width="12" height="12" style="border:1px solid #d3d3d3;"></canvas>
+                    <input id="radio3" type="radio" name="color_sel"> 
+                    <canvas id="myCanvas3" width="12" height="12" style="border:1px solid #d3d3d3;"></canvas>
+                    <input id="radio4" type="radio" name="color_sel"> 
+                    <canvas id="myCanvas4" width="12" height="12" style="border:1px solid #d3d3d3;"></canvas>
+                    <input id="input_word" type="text">
+                    <button type="button" id="myBtnAdd" onclick="addKey('input_word')">Add</button>
+                    <input id="radio5" type="radio" name="color_sel">Excluir
+                    
+                    <p id="word_space0"></p>
+                    <div id="word_space1" style="border-left-color:limegreen; ">Entrada da busca </div>
+                    <div id="word_space2" style="border-left-color:#555555;">Palavras de busca </div>
+                    <div id="word_space3" style="border-left-color:#f44336;">Complemento de busca </div>
+                    <div id="word_space4" style="border-left-color:#008CBA;">Complemento de busca </div>
+                    <div style="width:fit-content;">Pesquisar tudo <label class="switch">
+                        <input id="id_keysall" type="checkbox" name="search_all">
+                        <span class="slider round"></span>
+                      </label></div>
+                    <script>
+                      if ('{{keys_all}}' == 'True')
+                        document.getElementById("id_keysall").checked = true;
+                      else
+                        document.getElementById("id_keysall").checked = false;
+                      </script> 
+
+                    <!-- JS to create radio buttons and rectangles -->
+                    <script>
+                      colorBox("myCanvas1", "lime");
+                      colorBox("myCanvas2", "black");
+                      colorBox("myCanvas3", "red");
+                      colorBox("myCanvas4", "blue");
+                      function colorBox(id, color){
+                        var c = document.getElementById(id);
+                        var ctx = c.getContext("2d");
+                        if (color=="lime") 
+                          ctx.fillStyle = "limegreen";
+                        else if (color=="black") 
+                          ctx.fillStyle = "#555555";
+                        else if (color=="red") 
+                          ctx.fillStyle = "#f44336";
+                        else if (color=="blue") 
+                          ctx.fillStyle = "#008CBA";
+                        ctx.fillRect(0, 0, 12, 12);
+                      }
+                    </script>
+                  
+                  </div>
+
+                  <!-- JS to create and delete buttons of key words -->
+                  <script type=text/javascript>
+                    var scan_words = Object.values({{scan_words|safe}});
+                    var keys_init = Object.values({{keys_init|safe}});     
+                    var keys_lv1 = Object.values({{keys_lv1|safe}}); 
+                    var keys_lv2 = Object.values({{keys_lv2|safe}}); 
+                    var keys_lv3 = Object.values({{keys_lv3|safe}}); 
+                    var keys_off = ""
+                    
+                    displayKeys(scan_words, 'word_space0');
+                    displayKeys(keys_init, 'word_space1');
+                    displayKeys(keys_lv1, 'word_space2');
+                    displayKeys(keys_lv2, 'word_space3');
+                    displayKeys(keys_lv3, 'word_space4');
+
+                    function getButtonNames(space){
+                      var el = document.getElementById(space).getElementsByTagName("BUTTON");
+                      var list = [];
+                      for(var i=0;i<el.length;i++){
+                        list[i] = el[i].childNodes[0].nodeValue;
+                      }
+                      return list;
+                    }
+              
+                    function displayKeys(keys, space){
+                      for (i=0; i<keys.length; i++){ 
+                        var input_txt = keys[i];
+                        if (input_txt != ""){
+                          var button = document.createElement("BUTTON");
+                          var txt = document.createTextNode(input_txt);
+                          button.appendChild(txt);
+                          if (space == 'word_space0'){
+                            button.id = input_txt;
+                            button.onclick = function() {addKey(this.id), this.parentNode.removeChild(this)};
+                          }
+                          else 
+                            button.onclick = function() {this.parentNode.removeChild(this)};
+                          document.getElementById(space).appendChild(button);
+                        }
+                      }
+                    }
+                    function addKey(idinput){
+                      var input_txt = document.getElementById(idinput).value;
+                      if (input_txt == "")
+                        input_txt = document.getElementById(idinput).childNodes[0].nodeValue;
+
+                      if (input_txt != ""){
+                        var button = document.createElement("BUTTON");
+                        var txt = document.createTextNode(input_txt);
+                        if (document.getElementById("radio1").checked)
+                          var space = "word_space1";
+                        else if (document.getElementById("radio2").checked)
+                          var space = "word_space2";
+                        else if (document.getElementById("radio3").checked)
+                          var space = "word_space3";
+                        else if (document.getElementById("radio4").checked)
+                          var space = "word_space4";
+                        else if (document.getElementById("radio5").checked)
+                          var space = "";
+
+                        if (space != ""){
+                          button.appendChild(txt);
+                          button.onclick = function() {this.parentNode.removeChild(this)};
+                          document.getElementById(space).appendChild(button);
+                          document.getElementById(idinput).value = null
+                        }
+                        else{
+                          keys_off = input_txt;
+                        }
+                        updateWords();
+                      }
+                    }
+                    function colorBox(id){
+                      var c = document.getElementById(id);
+                      var ctx = c.getContext("2d");
+                      ctx.fillStyle = "#FF0000";
+                      ctx.fillRect(0, 0, 12, 12);
+                    }
+                    function updateWords(){
+                      keys_init = getButtonNames('word_space1');
+                      keys_lv1 = getButtonNames('word_space2');
+                      keys_lv2 = getButtonNames('word_space3');
+                      keys_lv3 = getButtonNames('word_space4');
+                      sel_e = document.getElementById("list_files");
+                      sel_date = sel_e.options[sel_e.selectedIndex].value;
+                      data = [keys_init, keys_lv1, keys_lv2, keys_lv3, sel_date, keys_off];
+
+                      $.ajax({
+                        type: "POST",
+                        url: "/update1",
+                        contentType: 'application/json;charset=UTF-8',
+                        data: JSON.stringify(data, null, '\t'),
+                        dataType: 'json',
+                      });  
+                    }
+
+                  </script>
+
+                  <div style="height: 192px;">
+                    <h3 id="titles">Mensagens</h3>
+                    <textarea style="width: 99%; height: 120px; resize: none;" id="myTextarea" readonly></textarea>
+                    {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                      <ul class=flashes>
+                        {% for message in messages %}
+                          <script>
+                            var status = document.getElementById("myTextarea").textContent;
+                            status = status + "{{message}}" + "\n";
+                            document.getElementById("myTextarea").textContent = status;
+                          </script>
+                        {% endfor %}
+                      </ul>
+                      {% endif %}
+                    {% endwith %}
+
+                  </div>
+                
+            </td>
+
+      </form>
+  </table>
+
+  <div id="footer">
+    <footer>by Augusto Abling - 2020</footer>
+  </div>
+
+</html>

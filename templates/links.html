@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-br">
+  </head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='styles.css') }}" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+      <form action="{{ url_for('main') }}" method="POST">
+
+        <div id="header">
+          <h2>GARIMPA EMPREGO
+          <input style="float: right;" class="myButton" type="submit" name="back_page" value="Voltar" onclick="updateWords2()"><br></br>
+        </div>
+
+            <div class="field" style="height: 540px; width:48%; float:left;">
+              <h3 id="titles">Links resultantes da análise</h3>
+              <label for="files">Selecione o arquivo:</label>
+              <select id="list_files" onchange="Load_links()">
+                {% for file in output_files[::-1] %}
+                  <option value={{file}}>{{file}}</option>
+                {% endfor %}
+              </select>
+              <ol id="id_list"></ol>  
+            </div>
+            
+            <div class="field" style="height: 298px; width:48%; float:left; clear:both; ">
+              <h3 id="titles">Favoritos</h3>
+              <ol id="id_list_data"></ol> 
+            </div>
+
+            <div class="field" id="id_page" style="height: 860px; width:48%;">
+              <a id="id_link" target="_blank" style="border: 1px black;" name="href_link" href="{{href_link}}">{{href_link}}</a><br></br>
+              <iframe id="id_iframe" height="755px" width="99%" frameBorder="2px" src="{{href_link}}"></iframe><p></p>
+              <input style="width: 90px;" class="myButton" type="submit" name="save_link" value="Salvar" onclick="updateWords2()">
+              <input style="width: 90px; float:right;" class="myButton" type="submit" name="del_link" value="Excluir" onclick="updateWords2()">
+            </div>
+
+        <script type="text/javascript">
+          document.getElementById("list_files").selectedIndex = {{sel_list}};
+          Load_links();
+          function Load_links(){
+            var result_links = {{result_links|safe}};
+            var data_links = {{data_links|safe}};
+            var sel_list = (document.getElementById("list_files").length - 1) - document.getElementById("list_files").selectedIndex;    
+            addHref(result_links[sel_list], "id_list");
+            addHref(data_links, "id_list_data");
+            function addHref(obj, id_list){
+              document.getElementById(id_list).textContent = "";
+              for (var idx in obj){ 
+                var link_idx = document.createElement("li");
+                var link_url = document.createElement("a");
+                link_url.style = "font-size: 14px;";
+                link_url.href = obj[idx];
+                link_url.textContent = obj[idx];
+                link_url.onclick = function() {Href_action()};
+                link_idx.appendChild(link_url);
+                document.getElementById(id_list).appendChild(link_idx);
+                function Href_action(){
+                  var sel_link = event.srcElement;
+                  var page_link = document.createElement("iframe");                
+                  document.getElementById("id_link").href = sel_link;
+                  document.getElementById("id_link").textContent = sel_link;
+                  document.getElementById("id_iframe").src = sel_link;
+                  return event.preventDefault();
+                }
+              }
+            }
+          }
+
+          function updateWords2(){
+            var sel_list = document.getElementById("list_files").selectedIndex;
+            var href_link = document.getElementById("id_link").href;
+            var compare_link = document.location.href;
+            if (href_link == compare_link){ href_link = "";}
+            data = [sel_list, href_link];
+
+            $.ajax({
+              type: "POST",
+              url: "/update2",
+              contentType: 'application/json;charset=UTF-8',
+              data: JSON.stringify(data, null, '\t'),
+              dataType: 'json',
+            });  
+          }
+        </script>
+
+  </form>
+  
+  <div id="footer">
+    <footer>by Augusto Abling - 2020</footer>
+  </div>
+
+</html>
