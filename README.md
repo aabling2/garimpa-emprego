@@ -8,22 +8,39 @@ Script de busca aprofundada de empregos em sites que não surgem como primeiras 
 
 4T19-Object_detection/
 *	'-|links/
+
 *	'-|outputs/
+
 	'-|scripts/
+	
 		'-|__init__.py
+		
 		'-|cv_reader.py
+		
 		'-|dictionary.py
+		
 		'-|g_emprego.py
+		
 		'-|others.py
+		
 	'-|static/
+	
 		'-|styles.css
+		
 	'-|templates/
+	
 		'-|index.html
+		
 		'-|links.html
+		
 	'-|main.py
+	
 *	'-|dict.npz
+
 *	'-|presets.npz
+
 *	'-|urls.npz
+
 	'-|README.txt
 
 * Arquivos/pastas gerados por software.
@@ -34,18 +51,27 @@ Script de busca aprofundada de empregos em sites que não surgem como primeiras 
 Seguem abaixo os requisitos para rodar a aplicação e junto os comandos sugeridos para instalação, caso esteja usando Ubuntu.
 
 * Python 3: 		sudo apt-get install python3
+
 * Pip3:			sudo apt-get install python3-pip 
+
 * Flask:		pip3 install Flask
+
 * Numpy:		pip3 install numpy
+
 * Google-search:	pip install google-search
+
 * Beautifulsoup4: 	pip install beautifulsoup4
+
 * Requests:		pip install requests
+
 * PDFMiner:		pip install pdfminer
+
 * Werkzeug:		pip install Werkzeug
 
 ## Argumentos de entrada
 
 *-h				--Ajuda
+
 *-p 5000			--Porta do servidor local
 
 ## Instruções de uso
@@ -63,7 +89,9 @@ aparecerá apenas no console.
 Para iniciar o container no Docker:
 
 "sudo docker login"                                                      - Logar no Docker
+
 "sudo docker run -it -p 5000:5000 abling2/python_app_extenso"            - Inicia container da aplicação mapeando a porta 5000 à porta 5000 do host
+
 "sudo docker stop $(docker ps -a -q)"                                    - Para todos containers rodando
 
 ## Autor
