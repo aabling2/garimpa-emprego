@@ -6,7 +6,7 @@ Script de busca aprofundada de empregos em sites que não surgem como primeiras 
 
 ## Estrutura do projeto
 
-4T19-Object_detection/
+Garimpa_emprego/
 *	'-|links/
 
 *	'-|outputs/
