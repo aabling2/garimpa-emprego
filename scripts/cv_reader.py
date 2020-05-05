@@ -3,46 +3,31 @@ import sys
 import os
 import unicodedata
 import glob
-from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
-from pdfminer.pdfpage import PDFPage
-from pdfminer.converter import TextConverter
-from pdfminer.layout import LAParams
-from io import StringIO
+import PyPDF2
 
 # Read pdf file and extract text 
 def Convert_PDF2Txt(PDF_file, save_path):
 
-    # PDFMiner boilerplate
-    rsrcmgr = PDFResourceManager()
-    sio = StringIO()
-    #codec = 'utf-8'
-    laparams = LAParams()
-    device = TextConverter(rsrcmgr, sio, laparams=laparams)
-    interpreter = PDFPageInterpreter(rsrcmgr, device)
+    pdfFileObject = open(PDF_file, 'rb')
+    pdfReader = PyPDF2.PdfFileReader(pdfFileObject)
+    count = pdfReader.numPages
+    text = ""
+    for i in range(count):
+        page = pdfReader.getPage(i)
+        text += page.extractText()
 
-    # Extract text
-    f = open(PDF_file, "rb") 
-    for page in PDFPage.get_pages(f):
-        interpreter.process_page(page)
-    f.close()
+    pdfFileObject.close()
+
+    # Save text extracted
+    with open(save_path+'pdf_text.txt', 'w') as f:
+        f.write(text)
+        f.close
 
     # Remove pdf files not in usage
     dir_pdf_files = glob.glob("static/*.pdf")
     for files in dir_pdf_files:
         if files[7:] != PDF_file[7:]:
             os.remove(files)
-
-    # Get text from StringIO
-    text = sio.getvalue()
-
-    # Cleanup
-    device.close()
-    sio.close()
-
-    # Save text extracted
-    with open(save_path+'pdf_text.txt', 'w') as f:
-        f.write(text)
-        f.close
 
     print('Leitura do documento finalizada.')
 
