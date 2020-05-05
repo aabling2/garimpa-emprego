@@ -8,7 +8,7 @@ tornar algo comercial porém pensando no funcionamento intuitivo para qualquer u
 
 ## Estrutura do projeto
 
-4T19-Object_detection/
+Garimpa_emprego/
 *	'-|links/
 *	'-|outputs/
 	'-|scripts/
@@ -35,19 +35,18 @@ tornar algo comercial porém pensando no funcionamento intuitivo para qualquer u
 
 Seguem abaixo os requisitos para rodar a aplicação e junto os comandos sugeridos para instalação, caso esteja usando Ubuntu.
 
-* Python 3: 		sudo apt-get install python3
+* Python 3: 			sudo apt-get install python3
 * Pip3:				sudo apt-get install python3-pip 
 * Flask:			pip3 install Flask
 * Numpy:			pip3 install numpy
-* Google-search:	pip install google-search
-* Beautifulsoup4: 	pip install beautifulsoup4
+* Google:			pip install google
 * Requests:			pip install requests
 * PDFMiner:			pip install pdfminer
 * Werkzeug:			pip install Werkzeug
 
 ## Argumentos de entrada
 
-*-h					--Ajuda
+*-h				--Ajuda
 *-p 5000			--Porta do servidor local
 
 ## Instruções de uso
@@ -72,7 +71,7 @@ aparecerá apenas no console.
 Para iniciar o container no Docker:
 
 "sudo docker login"                                                      - Logar no Docker
-"sudo docker run -it -p 5000:5000 abling2/python_garimpa_emprego"           - Inicia container da aplicação mapeando a porta 5000 à porta 5000 do host
+"sudo docker run -it -p 5000:5000 abling2/python_garimpa_emprego"        - Inicia container da aplicação mapeando a porta 5000 à porta 5000 do host
 "sudo docker stop $(docker ps -a -q)"                                    - Para todos containers rodando
 
 ## Autor

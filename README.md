@@ -6,7 +6,7 @@ Script de busca aprofundada de empregos em sites que não surgem como primeiras 
 
 ## Estrutura do projeto
 
-4T19-Object_detection/
+Garimpa_emprego/
 *	'-|links/
 
 *	'-|outputs/
@@ -52,21 +52,19 @@ Seguem abaixo os requisitos para rodar a aplicação e junto os comandos sugerid
 
 * Python 3: 		sudo apt-get install python3
 
-* Pip3:			sudo apt-get install python3-pip 
+* Pip3:				sudo apt-get install python3-pip 
 
-* Flask:		pip3 install Flask
+* Flask:			pip3 install Flask
 
-* Numpy:		pip3 install numpy
+* Numpy:			pip3 install numpy
 
-* Google-search:	pip install google-search
+* Google:			pip install google
 
-* Beautifulsoup4: 	pip install beautifulsoup4
+* Requests:			pip install requests
 
-* Requests:		pip install requests
+* PDFMiner:			pip install pdfminer
 
-* PDFMiner:		pip install pdfminer
-
-* Werkzeug:		pip install Werkzeug
+* Werkzeug:			pip install Werkzeug
 
 ## Argumentos de entrada
 
@@ -90,7 +88,7 @@ Para iniciar o container no Docker:
 
 "sudo docker login"                                                      - Logar no Docker
 
-"sudo docker run -it -p 5000:5000 abling2/python_garimpa_emprego"            - Inicia container da aplicação mapeando a porta 5000 à porta 5000 do host
+"sudo docker run -it -p 5000:5000 abling2/python_garimpa_emprego"        - Inicia container da aplicação mapeando a porta 5000 à porta 5000 do host
 
 "sudo docker stop $(docker ps -a -q)"                                    - Para todos containers rodando
 

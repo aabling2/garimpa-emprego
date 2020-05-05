@@ -1,12 +1,10 @@
-import glob
 import os
 import argparse
-import sys
 from scripts import cv_reader as CVreader
 from scripts import g_emprego as Gemprego
 from scripts import others as OT
 from scripts import dictionary as DICT
-from flask import Flask, render_template, Response, request, url_for, redirect, flash
+from flask import Flask, render_template, request, url_for, redirect, flash
 from werkzeug.utils import secure_filename
 
 # Create app with Flask

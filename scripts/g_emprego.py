@@ -3,10 +3,10 @@ import os
 import requests
 import re
 import glob
-from googlesearch import search 
 from bs4 import BeautifulSoup
 from datetime import date, datetime
 from flask import flash
+from googlesearch import search
 
 # Read saved files with url links and pass to a bag of words
 def Load_bag_links(keys_init, keys):
