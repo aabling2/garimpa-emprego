@@ -44,7 +44,7 @@ def Filter_words(bad_chars, bad_content, bad_words):
     content = str(unicodedata.normalize('NFKD', content).encode('ASCII','ignore'))
     for i in bad_chars : 
         content = content.replace(i, '')
-    content = list(set(content.split()))
+    content = list(content.split())
 
     # Remove words that don't are good for key words
     scan_words = []
@@ -58,6 +58,8 @@ def Filter_words(bad_chars, bad_content, bad_words):
                     break
             if b_el is False:
                 scan_words.append(key_low.capitalize())
+
+    scan_words = list(dict.fromkeys(scan_words))
 
     print("Palavras coletadas.")
 

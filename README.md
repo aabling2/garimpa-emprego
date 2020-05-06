@@ -62,9 +62,10 @@ Seguem abaixo os requisitos para rodar a aplicação e junto os comandos sugerid
 
 * Requests:			pip install requests
 
-* PDFMiner:			pip install pdfminer
-
 * Werkzeug:			pip install Werkzeug
+
+* PyPDF2:			pip install PyPDF2
+
 
 ## Argumentos de entrada
 

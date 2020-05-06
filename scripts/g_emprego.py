@@ -66,7 +66,7 @@ def Save_bag_results(bag_links_result):
         with open(file_name, 'w') as f:
             for item in bag_links_result:
                 f.write("%s\n" % item)
-            f.close
+        f.close
         print("Resultados gravados.")
     except:
         print("Resultados não puderam ser gravados.")
@@ -309,30 +309,8 @@ def Scrap_links(keys_lv, keys_init, lvs):
 # Calculate and rank list of results 
 def Organize_links(keys_init, lvs):
 
-    # Remove non relevant links
-    # *Maintain only urls with key words in it
+    # Load processed links
     bag_links_result = Load_bag_results()
-    bag_links_result_copy = {}
-    bag_links_result_copy.update(bag_links_result)
-    for url in bag_links_result_copy:
-        repeted = 0
-        for link in bag_links_result:
-            if link == url:
-                repeted += 1
-                print(repeted)
-
-    """# Remove repeted urls
-    for url in bag_links_result_copy:
-        for key in keys_init:        
-            if key in url or key.lower() in url:
-                rel = True
-                break
-            else:
-                rel = False
-                
-        if rel == False:
-            del bag_links_result[url]
-            print('Removed '+ url)"""
 
     # Save refined links
     Save_bag_results(bag_links_result)
@@ -345,12 +323,9 @@ def Organize_links(keys_init, lvs):
         bag_links_result[url] = calc_result
 
     # Organize list by weights
-    bag_links_rank = []
-    bag_links_rank = sorted(bag_links_result.items(), key=lambda x: x[1], reverse=True)
-
-    
-    """for i, bags in bag_links_sorted:
-        bag_links_rank = [idx for idx, val in bag_links_sorted]"""
+    bag_links_sorted = sorted(bag_links_result.items(), key=lambda x: x[1], reverse=True)
+    #for i, bags in bag_links_sorted:
+    bag_links_rank = [idx for idx, val in bag_links_sorted]
 
     flash('Total de links: ' + str(len(bag_links_rank)))
 
@@ -367,6 +342,7 @@ def Get_files_path(path, extension):
 
     output_files = []
     result_links = []
+
     try:
         dir_output_files = glob.glob(path+extension)
         

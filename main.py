@@ -99,17 +99,14 @@ def main():
 
         # Apply math to each link result and rank list
         elif 'list_results' in request.form:
-            if process_check == 2:
-                OT.Save_data(data_update1, 'presets')
-                Gemprego.Organize_links(keys_init, lvs)
-                result_links, output_files = Gemprego.Get_files_path(FOLDER_OUTPUTS, '*_Links.txt')
-                data_update2 = list(OT.Load_data(data_update2, 'urls'))
-                process_check = 0
-                if result_links or output_files:
-                    return render_template('links.html', result_links=result_links, output_files=output_files
-                                                        , sel_list=sel_list, href_link=href_link, data_links=data_update2)
-            else:
-                flash('Requer processo anterior.')
+            OT.Save_data(data_update1, 'presets')
+            Gemprego.Organize_links(keys_init, lvs)
+            result_links, output_files = Gemprego.Get_files_path(FOLDER_OUTPUTS, '*_Links.txt')
+            data_update2 = list(OT.Load_data(data_update2, 'urls'))
+            process_check = 0
+            if result_links or output_files:
+                return render_template('links.html', result_links=result_links, output_files=output_files
+                                                    , sel_list=sel_list, href_link=href_link, data_links=data_update2)
         
         # Open the page with results and saved links
         elif 'manage' in request.form:

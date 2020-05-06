@@ -150,7 +150,7 @@
                           button.appendChild(txt);
                           if (space == 'word_space0'){
                             button.id = input_txt;
-                            button.onclick = function() {addKey(this.id), this.parentNode.removeChild(this)};
+                            button.onclick = function() {addKey(this.id); this.parentNode.removeChild(this)};
                           }
                           else 
                             button.onclick = function() {this.parentNode.removeChild(this)};

@@ -35,14 +35,14 @@ Garimpa_emprego/
 
 Seguem abaixo os requisitos para rodar a aplicação e junto os comandos sugeridos para instalação, caso esteja usando Ubuntu.
 
-* Python 3: 			sudo apt-get install python3
+* Python 3: 		sudo apt-get install python3
 * Pip3:				sudo apt-get install python3-pip 
 * Flask:			pip3 install Flask
 * Numpy:			pip3 install numpy
 * Google:			pip install google
 * Requests:			pip install requests
-* PDFMiner:			pip install pdfminer
 * Werkzeug:			pip install Werkzeug
+* PyPDF2:			pip install PyPDF2
 
 ## Argumentos de entrada
 
