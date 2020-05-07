@@ -29,7 +29,7 @@ def Save_data(data, filename):
 def Load_data(data, filename):
 
     try:
-        data = np.load(filename+".npy")
+        data = np.load(filename+".npy", allow_pickle=True)
     
         print('Dados carregados de: ' + filename)
         

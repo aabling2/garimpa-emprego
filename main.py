@@ -43,6 +43,7 @@ def main():
     # Receive GET from page request
     if request.method == 'GET':
         date_files = OT.Get_files_date(FOLDER_LINKS, '*.txt')
+        filename, init, words, num_search, num_results, lvs = OT.Load_data(data_update1, 'presets')
 
     # Receive POST from page request
     if request.method == 'POST':
@@ -166,6 +167,7 @@ def main():
             flash('Atividade interrompida.')
 
         elif 'set_params' in request.form:
+            OT.Save_data(data_update1, 'presets')
             flash('Parâmetros salvos.')
 
     # Update page with new values
