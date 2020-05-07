@@ -307,7 +307,7 @@ def Scrap_links(keys_lv, keys_init, lvs):
         print('Varredura completa para: '+ keys_file) 
 
 # Calculate and rank list of results 
-def Organize_links(keys_init, lvs):
+def Organize_links(keys_init, words, num_results, lvs, folder_save):
 
     # Load processed links
     bag_links_result = Load_bag_results()
@@ -324,10 +324,11 @@ def Organize_links(keys_init, lvs):
 
     # Organize list by weights
     bag_links_sorted = sorted(bag_links_result.items(), key=lambda x: x[1], reverse=True)
-    #for i, bags in bag_links_sorted:
-    bag_links_rank = [idx for idx, val in bag_links_sorted]
-
+    bag_links_rank = [idx for idx, val in bag_links_sorted][:num_results]
     flash('Total de links: ' + str(len(bag_links_rank)))
+
+    # Create a HTML archive with the results
+    Create_HTML(keys_init, words, bag_links_rank, num_results, folder_save)
 
     # Save list if it's not empty
     if bag_links_rank:
@@ -358,3 +359,41 @@ def Get_files_path(path, extension):
     except:
         print('Não foi possível ou não existem arquivos para carregar.')
         return result_links, output_files
+
+# Create a HTML archive with the results
+def Create_HTML(keys_init, words, bag_links_rank, num_results, folder_save):
+
+    # Define initial bag of keys
+    html_init = ""
+    html_links = ""
+    html_keys1 = ""
+    html_keys2 = ""
+    html_keys3 = ""
+
+    # Fill each level
+    for search_word in keys_init:
+        html_init += ' ' + search_word + ' /'
+    for search_word in words[0]:
+        html_keys1 += ' ' + search_word + ' /'
+    for search_word in words[1]:
+        html_keys2 += ' ' + search_word + ' /'
+    for search_word in words[2]:
+        html_keys3 += ' ' + search_word + ' /'
+
+    # List urls
+    count = 1
+    for url in bag_links_rank:
+        html_links += '<p>' + str(count) + '- <a href=' + url + '>' + url + '</a></p>'
+        count+=1  
+
+    # Join html code
+    html_code = '<html>' + '<p>Entradas -->' + html_init + '</p><p>Prioridade 1 -->' + html_keys1 + '</p><p>Prioridade 2 -->' + html_keys2 + '</p><p>Prioridade 3 -->' + html_keys3 + '</p>' + html_links + '</html>'
+
+    # Save file
+    today = datetime.now()
+    date = str(today.month) + '-' + str(today.day) + '_'
+    file_name_html = folder_save + date + (os.path.basename(os.getcwd())) + '.html'
+    f = open(file_name_html,'w')   
+    f.write(html_code)
+    #webbrowser.open(file_name_html)
+    f.close()

@@ -17,13 +17,13 @@ FOLDER_OUTPUTS = 'outputs/'
 FOLDER_INTERN = 'static/'
 keys_lv, keys_init,  = {}, {}
 scan_words, result_links, output_files, date_files, dict_words = [], [], [], [], []
-num_search, sel_list, process_check = 100, 0, 0
+num_search, num_results, sel_list, process_check = 100, 200, 0, 0
 href_link, filename, sel_date = "", "", ""
 init = ['Vaga', 'Emprego']
 words = [['Visao Computacional', 'Computer Vision','Engenharia Eletrica'], 
         ['Inteligencia Artificial', 'Mecatronica', 'Automação'],
         ['Projetista', 'Desenvolvedor']]
-lvs = ["5.0", "3.0", "2.5", "2"]
+lvs = ["7.0", "3.0", "2.5", "5"]
 
 # Route of main page
 @app.route('/', methods = ['GET','POST'])
@@ -32,11 +32,11 @@ def main():
 
     # Set global variables
     global keys_lv, keys_init, scan_words, result_links, output_files, date_files, dict_words
-    global num_search, sel_list, process_check, keys_all, href_link, filename, sel_date
+    global num_search, num_results, sel_list, process_check, keys_all, href_link, filename, sel_date
     global init, words, lvs
 
     # Set lists with variables to save in numpy file
-    data_update1 = [filename, init, words, num_search, lvs]
+    data_update1 = [filename, init, words, num_search, num_results, lvs]
     data_update2 = []
     keys_all = False
 
@@ -49,6 +49,7 @@ def main():
 
         # Items to update from page
         if 'number_search' in request.form: num_search = int(request.form['number_search'])
+        if 'number_results' in request.form: num_results = int(request.form['number_results'])
         if 'weight1' in request.form: lvs[0] = float(request.form['weight1'])
         if 'weight2' in request.form: lvs[1] = float(request.form['weight2'])
         if 'weight3' in request.form: lvs[2] = float(request.form['weight3'])
@@ -100,7 +101,7 @@ def main():
         # Apply math to each link result and rank list
         elif 'list_results' in request.form:
             OT.Save_data(data_update1, 'presets')
-            Gemprego.Organize_links(keys_init, lvs)
+            Gemprego.Organize_links(keys_init, words, num_results, lvs, FOLDER_OUTPUTS)
             result_links, output_files = Gemprego.Get_files_path(FOLDER_OUTPUTS, '*_Links.txt')
             data_update2 = list(OT.Load_data(data_update2, 'urls'))
             process_check = 0
@@ -123,7 +124,7 @@ def main():
             data_update2 = list(OT.Load_data(data_update2, 'urls'))
             if href_link in data_update2:
                 flash('URL já existe no banco de dados.')
-            else:
+            elif href_link != "":
                 data_update2.append(href_link)
                 OT.Save_data(data_update2, 'urls')
                 flash('URL salva.')
@@ -156,7 +157,7 @@ def main():
         
         # Back from results page to main page
         elif 'back_page' in request.form:
-           filename, init, words, num_search, lvs = OT.Load_data(data_update1, 'presets')
+           filename, init, words, num_search, num_results, lvs = OT.Load_data(data_update1, 'presets')
 
         # Stop running with research or scrapping
         elif 'stop' in request.form:
@@ -175,6 +176,7 @@ def main():
         keys_lv2=words[1],
         keys_lv3=words[2],
         num_search=str(num_search),
+        num_results=str(num_results),
         lv1=lvs[0],
         lv2=lvs[1],
         lv3=lvs[2],
@@ -189,7 +191,7 @@ def update1():
 
     # Set global variables
     global keys_lv, keys_init, scan_words, result_links, output_files, date_files, dict_words
-    global num_search, sel_list, href_link, filename, sel_date
+    global num_search, num_results, sel_list, href_link, filename, sel_date
     global init, words, lvs
     
     # Receive POST from page request
