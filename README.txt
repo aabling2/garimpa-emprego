@@ -71,7 +71,7 @@ aparecerá apenas no console.
 Para iniciar o container no Docker:
 
 "sudo docker login"                                                      - Logar no Docker
-"sudo docker run -it -p 5000:5000 abling2/python_garimpa_emprego"        - Inicia container da aplicação mapeando a porta 5000 à porta 5000 do host
+"sudo docker run -it -p 5000:5000 aabling2/python_garimpa_emprego"       - Inicia container da aplicação mapeando a porta 5000 à porta 5000 do host
 "sudo docker stop $(docker ps -a -q)"                                    - Para todos containers rodando
 
 ## Autor
